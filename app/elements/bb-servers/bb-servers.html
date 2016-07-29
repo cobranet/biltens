@@ -9,31 +9,89 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/vaading-grid/vaading-grid.html">
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <dom-module id="bb-servers">
   <template>
-    <style>
+      <style include="iron-flex iron-flex-aligment">
       :host {
         display: block;
       }
     </style>
-    <div>Hello from <span>{{foo}}</span></div>
+    <div>
+	<iron-ajax
+	    auto
+	    url="http://localhost:3000/servers"
+	    params='{"part":"snippet", "q":"polymer", "key": "YOUTUBE_API_KEY", "type": "video"}'
+	    handle-as="json"
+	    last-response="{{servers}}"
+	    debounce-duration="300">
+	</iron-ajax>
+	<div class="layout vertical">
+	    <div class="layout horizontal">
+		<div class="flex"></div>
+		<paper-icon-button icon="add-circle-outline"></paper-icon-button>
+	    </div>
+	    
+	<vaadin-grid id="servers" on-selected-items-changed="onSelect">
+	    <table>
+		<colgroup>
+		    <col>
+		    <col>
+		    <col>
+		    <col>
+		    <col>
+		    <col>
+		</colgroup>
+		<thead>
+		    <tr><th></th>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Desc</th>
+			<th>IP</th>
+			<th><paper-icon-button icon="apps"></paper-icon-button></th>
+		    </tr>
+		</thead>
+		<tbody>
+		    <template is="dom-repeat" items="[[servers]]">
+			<tr>
+			    <td>
+				<img src="images/{{item.serverType.image}}" style="width: 24px">
+			    </td>
+			    <td>{{item.name}}</td>
+			    <td>{{item.serverType.name}}</td>
+			    <td>{{item.description}}</td>
+			    <td><a href="{{item.ip}}">{{item.ip}}</a> </td>
+			    <td>
+				
+				<paper-icon-button icon="create"></paper-icon-button>				<paper-icon-button icon="clear"></paper-icon-button>
+			    </td>
+			</tr>
+		    </template>
+		</tbody>
+	    </table>
+	</vaadin-grid>
+	</div>
+    </div>
   </template>
   <script>
-  (function() {
-    'use strict';
-
-    Polymer({
-      is: 'bb-servers',
-
-      properties: {
-        foo: {
-          type: String,
-          value: 'bb-servers',
-          notify: true
-        }
-      }
-    });
-  })();
+   (function() {
+       'use strict';
+       
+       Polymer({
+	   is: 'bb-servers',
+	   properties: {
+               servers: {
+		   type: Array,
+		   notify: true
+               }
+	   },
+	   onSelect: function(e){
+	       console.log(e);
+	   }
+       });
+   })();
   </script>
 </dom-module>

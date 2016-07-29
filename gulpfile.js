@@ -24,6 +24,7 @@ var historyApiFallback = require('connect-history-api-fallback');
 var packageJson = require('./package.json');
 var crypto = require('crypto');
 var ensureFiles = require('./tasks/ensure-files.js');
+var ts = require('gulp-typescript');
 
 // var ghPages = require('gulp-gh-pages');
 
@@ -154,6 +155,17 @@ gulp.task('fonts', function() {
       title: 'fonts'
     }));
 });
+
+
+gulp.task('typescript',function(){
+    gulp.src('server/models/**.ts')
+	.pipe(ts({
+	    noImplicitAny: true,
+	    module: 'commonjs'
+	}))
+	.pipe(gulp.dest('server/modelsjs'));
+});
+
 
 // Scan your HTML for assets & optimize them
 gulp.task('html', function() {
