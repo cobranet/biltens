@@ -21,8 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <div>
-	<iron-ajax
-	    auto
+	<iron-ajax id="call"
 	    url="http://localhost:3000/servers"
 	    params='{"part":"snippet", "q":"polymer", "key": "YOUTUBE_API_KEY", "type": "video"}'
 	    handle-as="json"
@@ -32,7 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<div class="layout vertical">
 	    <div class="layout horizontal">
 		<div class="flex"></div>
-		<paper-icon-button icon="add-circle-outline"></paper-icon-button>
+		<paper-icon-button on-tap="newServer" icon="add-circle-outline"></paper-icon-button>
 	    </div>
 	    
 	<vaadin-grid id="servers" on-selected-items-changed="onSelect">
@@ -66,7 +65,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			    <td><a href="{{item.ip}}">{{item.ip}}</a> </td>
 			    <td>
 				
-				<paper-icon-button icon="create"></paper-icon-button>				<paper-icon-button icon="clear"></paper-icon-button>
+				<paper-icon-button on-tap="editServer" icon="create"></paper-icon-button>
+				<paper-icon-button icon="clear"></paper-icon-button>
 			    </td>
 			</tr>
 		    </template>
@@ -86,10 +86,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                servers: {
 		   type: Array,
 		   notify: true
-               }
+               },
+	       route: {
+		   type: String,
+		   notify: true,
+		   reflectToAttribute: true
+	       }
+	   },
+	   newServer: function(e){
+	       this.route="newserver";
+	   },
+	   editServer: function(e){
+	       this.route = '!#servers';
 	   },
 	   onSelect: function(e){
-	       console.log(e);
+	       this.route = 'app'
+	   },
+	   ready: function(){
+	       this.$.call.generateRequest();
 	   }
        });
    })();
