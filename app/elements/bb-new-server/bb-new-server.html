@@ -28,13 +28,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      }
      paper-button {
 	 background-color: var(--primary-color);
+	 color: white;
      }
     </style>
     <form is="iron-form" id="form" method="post" action="/form/handler">
 	<div class="layout vertical">
 	    <div class="layout horizontal wrap">
 		<paper-input class="flex" name="name" label="Name"></paper-input>
-		<paper-input name="ip" label="IP-address"></paper-input>
+		<paper-input class="sec" name="ip" label="IP-address"></paper-input>
 	    </div>
 	    <div>
 		<paper-textarea class="hor" label="Description"></paper-textarea>

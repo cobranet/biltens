@@ -1,0 +1,13 @@
+/*global module*/
+var express = require('express');
+var srv = require("../modelsjs/server");
+var adminRouter = express.Router();
+var router  = function(){
+    adminRouter.route('/addServers').get(function(req,res){
+	var result = srv.addServers();
+	res.send(result);
+    });
+    return adminRouter;
+};
+
+module.exports = router;
